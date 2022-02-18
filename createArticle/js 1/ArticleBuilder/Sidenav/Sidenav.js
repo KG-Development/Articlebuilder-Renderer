@@ -1,4 +1,4 @@
-//import Settings from "../../Article/Settings/Settings.js";
+import Settings from "../../Article/Settings/Settings.js";
 import hostname from "../../Article/Module/host.js";
 
 export default class Sidenav {
@@ -197,20 +197,11 @@ export default class Sidenav {
             <header class="d-flex align-items-baseline"><span class="text-clip me-auto white-space">${data.title}</span><button class="btn btn-outline-danger btn-sm">X</button></header>
             <div>${data.description}</div>
         `;
-        elem.querySelector('button').addEventListener('click', async () => {
+        elem.querySelector('button').addEventListener('click', () => {
             console.log(data);
-            let response = await fetch(hostname + "/article/delete/" + data._id, {
-                method: 'DELETE',
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            });
+            localStorage.removeItem(data._id);
 
-            if (response.ok) {
-                location.reload();
-            }else {
-                console.error(new Error('Delete Request not correct'));
-            }
+            //location.reload();
         });
         elem.addEventListener("click", () => {
             this.onArticleClick(data._id);

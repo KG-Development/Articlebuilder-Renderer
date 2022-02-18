@@ -2,7 +2,7 @@ import Part from "../Article/Component/Part/Part.js";
 import Sidenav from "./Sidenav/Sidenav.js";
 import PartAPI from "../Article/Component/Part/api.js";
 import { Toolbox } from "../Article/Module/toolbox.js";
-//import Settings from "../Article/Settings/Settings.js";
+import Settings from "../Article/Settings/Settings.js";
 import Modal from "../../js 2/Modal.js";
 
 
@@ -20,7 +20,7 @@ export default class ArticleBuilder {
 
         this.onArticleChange = function () {};
 
-        //this.settings = new Settings({readOnly: this.readOnly});
+        this.settings = new Settings({readOnly: this.readOnly});
         
         this.data = this.checkData(data);
 
@@ -42,7 +42,7 @@ export default class ArticleBuilder {
             //createing save Modal
             this.saveModal = new Modal({
                 holder: holder,
-                apiBase: "http://localhost:80",
+                apiBase: "http://localhost:5500",
                 data: {
                     title: "Save Article",
                     closeBtn: true,
@@ -103,43 +103,18 @@ export default class ArticleBuilder {
                                         let parts = this.data.parts.filter(part => part.save() !== undefined);
                                         
                                         if(this.data._id !== undefined) {
-                                            let response = await fetch("http://localhost:80" + "/article/update", {
-                                                method: "PUT",
-                                                headers: {
-                                                    "Content-Type": "application/json"
-                                                },
-                                                body: JSON.stringify({
-                                                    title: this.data.title,
-                                                    parts: parts.map(part => {return part.save()}),
-                                                    description: this.data.description,
-                                                    created: this.data.created,
-                                                    lastChange: Date.now(),
-                                                    public: this.data.public,
-                                                    id: this.data._id
-                                                })
-                                            })
-                                            if(!response.ok) return;
-                                        } else {
-                                            let response = await fetch("http://localhost:80" + "/article/new", {
-                                                method: "POST",
-                                                headers: {
-                                                    "Content-Type": "application/json"
-                                                },
-                                                body: JSON.stringify({
-                                                    title: this.data.title,
-                                                    parts: parts.map(part => {return part.save()}),
-                                                    description: this.data.description,
-                                                    created: this.data.created,
-                                                    lastChange: Date.now(),
-                                                    public: this.data.public
-                                                })
-                                            })
-                                            if(!response.ok) return;
-                                            let data = await response.json();
-                                            this.data._id = data._id;
+                                            localStorage.setItem(`${this.data._id}`, JSON.stringify({title: this.data.title, parts: parts.map(part => {return part.save()}),
+                                                                    description: this.data.description, created: this.data.created, lastChange: Date.now(),
+                                                                    public: this.data.public, id: this.data._id})
+                                            );
+                                        }else {
+                                            let id = createID();
+                                            localStorage.setItem(`${id}`, JSON.stringify({title: this.data.title, parts: parts.map(part => {return part.save()}),
+                                                                    description: this.data.description, created: this.data.created, lastChange: Date.now(),
+                                                                    public: this.data.public, id: this.data._id})
+                                            );
+                                            this.data._id = id;
                                         }
-                                        
-
                                     }
                                 }
                             ]
@@ -412,4 +387,8 @@ export default class ArticleBuilder {
         this.sidenav.remove();
         this.wrapper.remove();
     }
+}
+
+const createID = () => {
+    return Math.random();
 }

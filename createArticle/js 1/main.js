@@ -8,6 +8,7 @@ import { Spacing } from "./Article/Module/Spacing.js";
 import ArticleBuilder from "./ArticleBuilder/ArticleBuilder.js";
 import CheckList from "./Article/Module/CheckList.js";
 import Downloadable from './Article/Module/Downloadable.js';
+import Settings from "./Article/Settings/Settings.js";
 
 const App = () => {
     let ab = new ArticleBuilder(
@@ -66,9 +67,7 @@ async function loadNewArticle(ab, id) {
         }
         ab.remove();
         ab = undefined;
-        let response = await fetch("http://localhost:80/article/" + id);
-        if(!response.ok) return;
-        let article = await response.json();
+        let article = localStorage.getItem(`${id}`);
         ab = new ArticleBuilder(
             {
                 holder: document.querySelector("#app"),
