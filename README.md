@@ -16,3 +16,10 @@ To be ported:
 - images
 - pdf's
 - downloadables
+- Back Button
+- Edit Button
+
+To run the program:
+For editing the articles:
+Open the "createArticle.html" with LiveServer or something just like that and you are ready to go.
+For seeing the edited Articles run the "news.html" and there you can access all the articles stored in your local storage so far.
