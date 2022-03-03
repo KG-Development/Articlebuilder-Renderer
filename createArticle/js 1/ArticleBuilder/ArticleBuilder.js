@@ -4,6 +4,7 @@ import PartAPI from "../Article/Component/Part/api.js";
 import { Toolbox } from "../Article/Module/toolbox.js";
 import Settings from "../Article/Settings/Settings.js";
 import Modal from "../../js 2/Modal.js";
+import ArticleAPI from "../../../utils/ArticleAPI.js";
 
 
 export default class ArticleBuilder {
@@ -102,18 +103,16 @@ export default class ArticleBuilder {
 
                                         let parts = this.data.parts.filter(part => part.save() !== undefined);
                                         
-                                        if(this.data._id !== undefined) {
-                                            localStorage.setItem(`${this.data._id}`, JSON.stringify({title: this.data.title, parts: parts.map(part => {return part.save()}),
-                                                                    description: this.data.description, created: this.data.created, lastChange: Date.now(),
-                                                                    public: this.data.public, id: this.data._id})
-                                            );
+                                        if(this.data.id !== undefined) {
+                                            ArticleAPI.updateArticle("articles", {title: this.data.title, parts: parts.map(part => {return part.save()}),
+                                            description: this.data.description, created: this.data.created, lastChange: Date.now(),
+                                            public: this.data.public, id: this.data.id});
                                         }else {
                                             let id = createID();
-                                            localStorage.setItem(`${id}`, JSON.stringify({title: this.data.title, parts: parts.map(part => {return part.save()}),
-                                                                    description: this.data.description, created: this.data.created, lastChange: Date.now(),
-                                                                    public: this.data.public, id: this.data._id})
-                                            );
-                                            this.data._id = id;
+                                            ArticleAPI.putArticle("articles", {title: this.data.title, parts: parts.map(part => {return part.save()}),
+                                            description: this.data.description, created: this.data.created, lastChange: Date.now(),
+                                            public: this.data.public, id: id});
+                                            this.data.id = id;
                                         }
                                     }
                                 }
@@ -130,7 +129,7 @@ export default class ArticleBuilder {
 
                 let backBtn = document.createElement("a");
                 backBtn.classList.add(...["btn", "btn-danger", "ms-auto", "me-2"]);
-                backBtn.href = "/news";
+                backBtn.href = "/";
                 backBtn.innerText = "Back"
 
                 this.sidenav.extendContainer.appendChild(backBtn);
@@ -238,7 +237,7 @@ export default class ArticleBuilder {
         newData.lastChange = data.lastChange || Date.now();
         newData.parts = data.parts || [];
         newData.public = data.public || true;
-        newData._id = data._id || undefined;
+        newData.id = data.id || undefined;
 
         return newData;
     }
@@ -374,7 +373,7 @@ export default class ArticleBuilder {
                 data: {
                     text: this.data.description
                 },
-                id: "empty_" + this.data._id
+                id: "empty_" + this.data.id
             })
         }
         return this.wrapper;

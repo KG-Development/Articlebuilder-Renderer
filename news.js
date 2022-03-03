@@ -8,10 +8,14 @@ import List from "../createArticle/js 1/Article/Module/List.js";
 import { Paragraph } from "../createArticle/js 1/Article/Module/Paragraph.js";
 import { Spacing } from "../createArticle/js 1/Article/Module/Spacing.js";
 import ArticleBuilder from "../createArticle/js 1/ArticleBuilder/ArticleBuilder.js";
+import ArticleAPI from "./utils/ArticleAPI.js";
 
 async function App () {
+    document.querySelector("#addBtn").addEventListener("click", () => {
+        window.location.href = "/createArticle/createArticle.html";
+    })
     const app = document.querySelector("#articleRender");
-    const articles = getArticles() || [];
+    const articles = ArticleAPI.getArticles("articles") || [];
 
     articles.map(article => {
         let newArticle = new ArticleBuilder(
@@ -72,16 +76,6 @@ async function App () {
             app.appendChild(newArticle.render());
         }
     })
-}
-
-function getArticles () {
-    if (!localStorage.length) return undefined;
-    let articles = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        articles.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-    }
-    console.log(articles);
-    return articles;
 }
 
 function renderFullPage(article) {

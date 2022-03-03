@@ -128,8 +128,9 @@ export default class Modal {
 
     //Gets from the server a id
     async getId() {
-        let response = await fetch(this.apiBase + "/uuid");
-        if(response.ok)
-            return await response.json();
+        // let response = await fetch(this.apiBase + "/uuid");
+        // if(response.ok)
+        //     return await response.json();
+        return Math.random() * 100000;
     }
 }

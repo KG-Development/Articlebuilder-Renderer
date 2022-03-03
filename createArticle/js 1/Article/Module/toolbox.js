@@ -184,10 +184,7 @@ const cloneAttributeStringAndInsertValue = (element, additionalValue) => {
     let attributeString = element.getAttribute('style') || '';
 
     if (attributeString.includes(additionalValue)) {
-        console.log('Before: ' + attributeString);
         attributeString = attributeString.replace(additionalValue, '').trim();
-
-        console.log('After: ' + attributeString);
         return attributeString;
     }
     attributeString += `${additionalValue}`;

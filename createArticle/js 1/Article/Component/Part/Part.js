@@ -6,7 +6,7 @@ export default class Part {
         this.css = Part.CSS;
         this.id = this.data.id || undefined;
         if(this.id === undefined)
-        this.createId.then(data => this.id = data.id).catch(err => console.log(err));
+        this.id = Math.random() * 100000;
         
         this.tool = this.data.type || undefined;
         this.toolInstance = this.api.tools[this.tool] ? new this.api.tools[this.tool].class({readonly: readonly, data: this.data.data}) : undefined;

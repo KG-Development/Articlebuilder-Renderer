@@ -221,7 +221,6 @@ export default class CheckList {
         });
 
         retItems = retItems.filter(item => item.text.trim().length !== 0);
-        console.log(retItems);
 
         return {
             list: retItems
@@ -229,7 +228,6 @@ export default class CheckList {
     }
 
     setFocus () {
-        console.log(this.items);
         this.moveCaret(this.getContent(this.items[0]), true); 
     }
 }

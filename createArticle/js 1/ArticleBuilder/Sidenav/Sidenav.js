@@ -1,5 +1,6 @@
 import Settings from "../../Article/Settings/Settings.js";
 import hostname from "../../Article/Module/host.js";
+import ArticleAPI from "../../../../utils/ArticleAPI.js";
 
 export default class Sidenav {
     constructor ({data, holder, tools}, {onItemStartDrag, onItemEndEvent, onArticleClick} = {}) {
@@ -198,13 +199,11 @@ export default class Sidenav {
             <div>${data.description}</div>
         `;
         elem.querySelector('button').addEventListener('click', () => {
-            console.log(data);
-            localStorage.removeItem(data._id);
-
+            ArticleAPI.deleteArticleById("articles", data.id);
             //location.reload();
         });
         elem.addEventListener("click", () => {
-            this.onArticleClick(data._id);
+            this.onArticleClick(data.id);
         });
         return elem;
     }
